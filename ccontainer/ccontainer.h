@@ -392,6 +392,94 @@ namespace contlib
 			}
 		}
 
+		class iterator
+		{
+		private:
+			T* it_ptr{ nullptr };
+
+		public:
+
+			using iterator_category = std::bidirectional_iterator_tag;
+			using diferrence_type = ptrdiff_t;
+			using value_type = T;
+			using pointer = T*;
+			using reference = T&;
+
+			iterator(T* init) :it_ptr{ init } {};
+
+			T& operator * ()
+			{
+				return *it_ptr;
+			}
+			T* operator -> ()
+			{
+				return it_ptr;
+			}
+
+			iterator& operator ++ ()
+			{
+				++it_ptr;
+
+				return (*this);
+			}
+			iterator operator ++ (int)
+			{
+				iterator temp = (*this);
+
+				++(*this);
+
+				return temp;
+			}
+
+			iterator& operator -- ()
+			{
+				--it_ptr;
+
+				return (*this);
+			}
+			iterator operator -- (int)
+			{
+				iterator temp = (*this);
+
+				--(*this);
+
+				return temp;
+			}
+
+			friend bool operator == (iterator& current, iterator& other)
+			{
+				return (current.it_ptr == other.it_ptr);
+			}
+			friend bool operator != (iterator& current, iterator& other)
+			{
+				return (current.it_ptr != other.it_ptr);
+			}
+			friend bool operator < (iterator& current, iterator& other)
+			{
+				return (current.it_ptr < other.it_ptr);
+			}
+			friend bool operator > (iterator& current, iterator& other)
+			{
+				return (current.it_ptr > other.it_ptr);
+			}
+			friend bool operator <= (iterator& current, iterator& other)
+			{
+				return (current.it_ptr <= other.it_ptr);
+			}
+			friend bool operator >= (iterator& current, iterator& other)
+			{
+				return (current.it_ptr >= other.it_ptr);
+			}
+		};
+
+		iterator begin()
+		{
+			return iterator(&mPtr);
+		}
+		iterator end()
+		{
+			return iterator(&mPtr[next_pos]);
+		}
 	};
 
 
