@@ -455,21 +455,22 @@ namespace contlib
 			{
 				return (current.it_ptr != other.it_ptr);
 			}
-			friend bool operator < (iterator& current, iterator& other)
+			
+			bool operator < (iterator& other)
 			{
-				return (current.it_ptr < other.it_ptr);
+				return (it_ptr < other.it_ptr);
 			}
-			friend bool operator > (iterator& current, iterator& other)
+			bool operator > (iterator& other)
 			{
-				return (current.it_ptr > other.it_ptr);
+				return (it_ptr > other.it_ptr);
 			}
-			friend bool operator <= (iterator& current, iterator& other)
+			bool operator <= (iterator& other)
 			{
-				return (current.it_ptr <= other.it_ptr);
+				return (it_ptr <= other.it_ptr);
 			}
-			friend bool operator >= (iterator& current, iterator& other)
+			bool operator >= (iterator& other)
 			{
-				return (current.it_ptr >= other.it_ptr);
+				return (it_ptr >= other.it_ptr);
 			}
 		};
 
