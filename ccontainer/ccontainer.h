@@ -107,13 +107,29 @@ namespace contlib
 			return (next_pos == 0);
 		}
 
-		bool operator==(BAG& other)
+		bool operator == (BAG<T>& other)
 		{
 			return (mPtr == other.mPtr);
 		}
-		bool operator!=(BAG& other)
+		bool operator != (BAG<T>& other)
 		{
 			return (mPtr != other.mPtr);
+		}
+		bool operator < (BAG<T>&other)
+		{
+			return (mPtr < other.mPtr);
+		}
+		bool operator > (BAG<T>& other)
+		{
+			return (mPtr > other.mPtr);
+		}
+		bool operator <= (BAG<T>& other)
+		{
+			return (mPtr <= other.mPtr);
+		}
+		bool operator >= (BAG<T>& other)
+		{
+			return (mPtr >= other.mPtr);
 		}
 
 		T& operator[] (size_t index)
@@ -140,7 +156,17 @@ namespace contlib
 			return mPtr[next_pos - 1];
 		}
 
-		BAG& operator= (BAG& other)
+		void clear()
+		{
+			free(mPtr);
+
+			max_size = 1;
+			next_pos = 0;
+
+			mPtr = reinterpret_cast<T*>(calloc(max_size, sizeof(T)));
+		}
+
+		BAG<T>& operator= (BAG<T>& other)
 		{
 			free(mPtr);
 
@@ -166,7 +192,7 @@ namespace contlib
 
 			return (*this);
 		}
-		BAG& operator= (BAG&& other)
+		BAG<T>& operator= (BAG<T>&& other)
 		{
 			if (other.mPtr == nullptr)throw EXCEPTION(BAD_PTR);
 			else
@@ -232,6 +258,139 @@ namespace contlib
 			}
 		}
 
+		void push_front(T element)
+		{
+			if (!mPtr)throw EXCEPTION(BAD_PTR);
+			else
+			{
+				if (next_pos + 1 <= max_size)
+				{
+					*mPtr = element;
+					++next_pos;
+				}
+				else
+				{
+					++max_size;
+
+					mPtr = reinterpret_cast<T*>(realloc(mPtr, max_size * sizeof(T)));
+
+					if (!mPtr)throw EXCEPTION(BAD_PTR);
+					else
+					{
+						for (size_t count = next_pos; count > 0; ++count)mPtr[count] = mPtr[count - 1];
+
+						*mPtr = element;
+						++next_pos;
+					}
+				}
+			}
+		}
+		void push_front(T* element)
+		{
+			if (!mPtr)throw EXCEPTION(BAD_PTR);
+			else
+			{
+				if (next_pos + 1 <= max_size)
+				{
+					*mPtr = *element;
+					++next_pos;
+				}
+				else
+				{
+					++max_size;
+
+					mPtr = reinterpret_cast<T*>(realloc(mPtr, max_size * sizeof(T)));
+
+					if (!mPtr)throw EXCEPTION(BAD_PTR);
+					else
+					{
+						for (size_t count = next_pos; count > 0; ++count)mPtr[count] = mPtr[count - 1];
+
+						*mPtr = *element;
+						++next_pos;
+					}
+				}
+			}
+		}
+
+		void erase(size_t index)
+		{
+			if (index < 0 || index >= next_pos)return;
+
+			if (!mPtr)throw EXCEPTION(BAD_PTR);
+			else
+			{
+				for (size_t count = index; count < next_pos - 1; ++count)mPtr[count] = mPtr[count + 1];
+				--next_pos;
+			}
+		}
+		
+		void insert(T element, size_t index)
+		{
+			if (index < 0 || index >= next_pos)return;
+
+			if (!mPtr)throw EXCEPTION(BAD_PTR);
+			else
+			{
+				if (next_pos + 1 <= max_size)
+				{
+					for (size_t count = next_pos; count > index; --count)mPtr[count] = mPtr[count - 1];
+
+					mPtr[index] = element;
+
+					++next_pos;
+				}
+				else
+				{
+					++max_size;
+
+					mPtr = reinterpret_cast<T*>(realloc(mPtr, max_size * sizeof(T)));
+
+					if (!mPtr)throw EXCEPTION(BAD_PTR);
+					else
+					{
+						for (size_t count = next_pos; count > index; --count)mPtr[count] = mPtr[count - 1];
+
+						mPtr[index] = element;
+
+						++next_pos;
+					}
+				}
+			}
+		}
+		void insert(T *element, size_t index)
+		{
+			if (index < 0 || index >= next_pos)return;
+
+			if (!mPtr)throw EXCEPTION(BAD_PTR);
+			else
+			{
+				if (next_pos + 1 <= max_size)
+				{
+					for (size_t count = next_pos; count > index; --count)mPtr[count] = mPtr[count - 1];
+
+					mPtr[index] = *element;
+
+					++next_pos;
+				}
+				else
+				{
+					++max_size;
+
+					mPtr = reinterpret_cast<T*>(realloc(mPtr, max_size * sizeof(T)));
+
+					if (!mPtr)throw EXCEPTION(BAD_PTR);
+					else
+					{
+						for (size_t count = next_pos; count > index; --count)mPtr[count] = mPtr[count - 1];
+
+						mPtr[index] = *element;
+
+						++next_pos;
+					}
+				}
+			}
+		}
 
 	};
 
