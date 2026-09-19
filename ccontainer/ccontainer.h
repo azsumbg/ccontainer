@@ -12,6 +12,7 @@
 
 #pragma comment(lib, "d2d1.lib")
 
+constexpr int CONT_OK{ 5000 };
 constexpr int BAD_PTR{ 5001 };
 constexpr int BAD_INDEX{ 5002 };
 constexpr int BAD_PARAM{ 5003 };
@@ -117,19 +118,19 @@ namespace contlib
 		}
 		bool operator < (BAG<T>&other)
 		{
-			return (mPtr < other.mPtr);
+			return (max_size < other.max_size);
 		}
 		bool operator > (BAG<T>& other)
 		{
-			return (mPtr > other.mPtr);
+			return (max_size > other.max_size);
 		}
 		bool operator <= (BAG<T>& other)
 		{
-			return (mPtr <= other.mPtr);
+			return (max_size <= other.max_size);
 		}
 		bool operator >= (BAG<T>& other)
 		{
-			return (mPtr >= other.mPtr);
+			return (max_size >= other.max_size);
 		}
 
 		T& operator[] (size_t index)
@@ -358,7 +359,7 @@ namespace contlib
 				}
 			}
 		}
-		void insert(T *element, size_t index)
+		void insert(T* element, size_t index)
 		{
 			if (index < 0 || index >= next_pos)return;
 
@@ -482,8 +483,11 @@ namespace contlib
 		}
 	};
 
+	// FUNCTIONS **************************
 
+	float CCONTAINER_API Distance(D2D1_POINT_2F init_point, D2D1_POINT_2F ref);
+	
+	int CCONTAINER_API SortBag(BAG<D2D1_POINT_2F>& bag, D2D1_POINT_2F ref, bool ascending = true);
 
-
-
+	int CCONTAINER_API SortBag(BAG<D2D1_POINT_2F>& bag, D2D1_RECT_F ref_rect, bool ascending = true);
 }
