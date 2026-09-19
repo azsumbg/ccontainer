@@ -447,28 +447,41 @@ namespace contlib
 				return temp;
 			}
 
-			friend bool operator == (iterator& current, iterator& other)
+			iterator& operator + (const size_t addent)
+			{
+				it_ptr += addent;
+
+				return (*this);
+			}
+			iterator& operator - (const size_t substracter)
+			{
+				it_ptr -= substracter;
+
+				return (*this);
+			}
+
+			friend bool operator == (const iterator& current, const iterator& other)
 			{
 				return (current.it_ptr == other.it_ptr);
 			}
-			friend bool operator != (iterator& current, iterator& other)
+			friend bool operator != (const iterator& current, const iterator& other)
 			{
 				return (current.it_ptr != other.it_ptr);
 			}
 			
-			bool operator < (iterator& other)
+			bool operator < (const iterator& other)
 			{
 				return (it_ptr < other.it_ptr);
 			}
-			bool operator > (iterator& other)
+			bool operator > (const iterator& other)
 			{
 				return (it_ptr > other.it_ptr);
 			}
-			bool operator <= (iterator& other)
+			bool operator <= (const iterator& other)
 			{
 				return (it_ptr <= other.it_ptr);
 			}
-			bool operator >= (iterator& other)
+			bool operator >= (const iterator& other)
 			{
 				return (it_ptr >= other.it_ptr);
 			}
@@ -476,7 +489,7 @@ namespace contlib
 
 		iterator begin()
 		{
-			return iterator(&mPtr);
+			return iterator(mPtr);
 		}
 		iterator end()
 		{
