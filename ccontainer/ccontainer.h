@@ -406,6 +406,8 @@ namespace contlib
 			using pointer = T*;
 			using reference = T&;
 
+			friend class BAG<T>;
+
 			iterator(T* init) :it_ptr{ init } {};
 
 			T& operator * ()
@@ -494,6 +496,12 @@ namespace contlib
 		iterator end()
 		{
 			return iterator(&mPtr[next_pos]);
+		}
+
+		void erase(iterator it)
+		{
+			for (size_t ind = 0; ind < next_pos; ++ind)
+				if (mPtr + ind == it.it_ptr)erase(ind);
 		}
 	};
 
